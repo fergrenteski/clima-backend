@@ -32,14 +32,21 @@ app.post("/api/dados", async (req, res) => {
 });
 
 app.get("/api/dados", async (req, res) => {
+    const minutos = parseInt(req.query.minutos) || 10;
+
     try {
-        const result = await pool.query("SELECT * FROM medidas ORDER BY id DESC");
-        res.json(result);
+        const result = await pool.query(`
+      SELECT * FROM medidas
+      WHERE timestamp >= NOW() - INTERVAL ${minutos} MINUTE
+      ORDER BY id DESC
+    `);
+        res.json(result.rows); // PostgreSQL: result.rows | MySQL: result[0]
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Erro ao buscar os dados." });
     }
 });
+
 
 // Exporta como função serverless
 module.exports = app;

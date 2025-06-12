@@ -41,15 +41,6 @@ app.get("/api/dados", async (req, res) => {
     }
 });
 
-app.get("/", async (req, res) => {
-    try {
-        res.json("Hello World!");
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Erro ao buscar os dados." });
-    }
-});
-
 // Exporta como função serverless
 module.exports = app;
 module.exports.handler = serverless(app);

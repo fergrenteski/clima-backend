@@ -36,16 +36,18 @@ app.get("/api/dados", async (req, res) => {
 
     try {
         const result = await pool.query(
-            `SELECT * FROM medidas WHERE timestamp >= now() - INTERVAL '${minutos} minutes' ORDER BY id DESC`,
+            `SELECT * FROM medidas WHERE timestamp >= (now() - INTERVAL '${minutos} minutes') ORDER BY id DESC`,
         );
-        res.json(result.rows); // PostgreSQL: result.rows | MySQL: result[0]
+        res.json(Object.values(result)); // PostgreSQL: result.rows | MySQL: result[0]
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Erro ao buscar os dados." });
     }
 });
 
-
+app.listen(3000, () => {
+    console.log(`Servidor rodando na porta ${3000}`);
+});
 // Exporta como função serverless
-module.exports = app;
-module.exports.handler = serverless(app);
+// module.exports = app;
+// module.exports.handler = serverless(app);

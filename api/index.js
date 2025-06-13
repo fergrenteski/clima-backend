@@ -35,11 +35,10 @@ app.get("/api/dados", async (req, res) => {
     const minutos = parseInt(req.query.minutos) || 10;
 
     try {
-        const result = await pool.query(`
-      SELECT * FROM medidas
-      WHERE timestamp >= NOW() - INTERVAL ${minutos} MINUTE
-      ORDER BY id DESC
-    `);
+        const result = await pool.query(
+            `SELECT * FROM medidas WHERE timestamp >= NOW() - INTERVAL $1 ORDER BY id DESC`,
+            [`${minutos} minutes`]
+        );
         res.json(result.rows); // PostgreSQL: result.rows | MySQL: result[0]
     } catch (error) {
         console.error(error);

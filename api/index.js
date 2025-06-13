@@ -45,9 +45,6 @@ app.get("/api/dados", async (req, res) => {
     }
 });
 
-app.listen(3000, () => {
-    console.log(`Servidor rodando na porta ${3000}`);
-});
 // Exporta como função serverless
-// module.exports = app;
-// module.exports.handler = serverless(app);
+module.exports = app;
+module.exports.handler = serverless(app);
